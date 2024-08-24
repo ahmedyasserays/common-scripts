@@ -1,0 +1,49 @@
+# after having nginx files in your repo do the following
+ssh-keygen
+add ssh key to github deploy keys
+git clone <repo_name>
+sudo apt-get update
+sudo apt-get install python3-pip
+sudo pip3 install virtualenv 
+sudo apt-get install python3-dev libpq-dev postgresql postgresql-contrib
+sudo su - postgres
+psql
+	create database <database_name>;
+	create role <name> with encrypted password <'password'>; amberlizard54
+	alter role <name> with LOGIN;
+	grant all on DATABASE <db_name> to <role_name>;
+sudo apt install nginx
+sudo apt-get install supervisor
+sudo service supervisor restart
+
+# inside project directory
+virtualenv -p python3 venv
+mkdir logs
+touch logs/gunicorn.log
+
+sudo ln -s  /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
+sudo nano /etc/hosts
+	write 127.0.0.1      ip-172-xx-x-xx  ip-172-31-95-24
+# on your local machine run 
+fab update
+
+# back to server
+sudo service nginx restart
+
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python3-certbot-nginx
+sudo certbot --nginx -d <domain name>
+
+Copy genrated files (/etc/nginx/sites-enabled/nginx.conf) to our project infra/nginx.conf
+
+# install celery
+sudo apt-get install rabbitmq-server
+sudo rabbitmq-server
+update celery.conf
+pip install celery
+
+
+# configure s3
+pip install django-storages
+
